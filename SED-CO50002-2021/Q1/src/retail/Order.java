@@ -2,6 +2,7 @@ package retail;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Order {
@@ -11,7 +12,7 @@ public abstract class Order {
   private final Address shippingAddress;
   private final Courier courier;
 
-  public Order(List<Product> items, CreditCardDetails creditCardDetails, Address billingAddress, Address shippingAddress, Courier courier) {
+  protected Order(List<Product> items, CreditCardDetails creditCardDetails, Address billingAddress, Address shippingAddress, Courier courier) {
     this.items = items;
     this.creditCardDetails = creditCardDetails;
     this.billingAddress = billingAddress;
