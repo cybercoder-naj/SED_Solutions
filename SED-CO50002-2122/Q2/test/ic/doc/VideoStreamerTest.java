@@ -7,19 +7,21 @@ import ic.doc.movies.Movie;
 import ic.doc.streaming.VideoStream;
 import org.junit.Test;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
 import static ic.doc.movies.Certification.PARENTAL_GUIDANCE;
 import static ic.doc.movies.Certification.TWELVE_A;
 import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.min;
 
 public class VideoStreamerTest {
 
     @Test
     public void allowsUserToStreamSuggestedMovies() {
 
-        VideoStreamer streamer = new VideoStreamer(new FakeRecommender());
+        VideoStreamer streamer = new VideoStreamer(new FakeRecommender(), new FakeClock());
         User user = new User("Adam", 9);
 
         List<Movie> movies = streamer.getSuggestedMovies(user);
@@ -55,6 +57,23 @@ public class VideoStreamerTest {
                     EMPTY_LIST,
                     TWELVE_A
                 ));
+        }
+    }
+
+    private static class FakeClock implements Clock {
+        LocalTime time = LocalTime.now();
+
+        @Override
+        public LocalTime getTime() {
+            return time;
+        }
+
+        public void setTime(LocalTime time) {
+            this.time = time;
+        }
+
+        public void advanceMinutes(long minutes) {
+            time = time.plusMinutes(minutes);
         }
     }
 }
