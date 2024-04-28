@@ -15,7 +15,7 @@ public class VideoStreamer {
   private final PlaybackEventLog playbackEvents = new PlaybackEventLog();
 
   public List<Movie> getSuggestedMovies(User user) {
-    List<Movie> recommendations = new MediaLibrary().recommendedMoviesFor(user);
+    List<Movie> recommendations = MediaLibrary.getInstance().recommendedMoviesFor(user);
 
     // sort the list of suggestions in descending order of number of views
     List<Movie> suggestions =  new ArrayList<>(recommendations);

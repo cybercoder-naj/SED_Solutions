@@ -19,9 +19,11 @@ public class MediaLibrary {
     // This code is simplified for the purposes of the exam - you can imagine in real life
     // this class would be much bigger and more sophisticated, with much more data.
 
+    private static final MediaLibrary INSTANCE = new MediaLibrary();
+
     private final List<Movie> topMovies;
 
-    public MediaLibrary() {
+    private MediaLibrary() {
         topMovies = List.of(
                 new Movie("Jurassic Park",
                         "A pragmatic paleontologist touring an almost complete theme park on an " +
@@ -58,5 +60,9 @@ public class MediaLibrary {
         } else {
             return topMovies;
         }
+    }
+
+    public static MediaLibrary getInstance() {
+        return INSTANCE;
     }
 }
