@@ -1,19 +1,13 @@
 package retail;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 
-public class SmallOrder {
+public class SmallOrder extends Order {
 
   private static final BigDecimal GIFT_WRAP_CHARGE = new BigDecimal(3);
 
-  private final List<Product> items;
-  private final CreditCardDetails creditCardDetails;
-  private final Address billingAddress;
-  private final Address shippingAddress;
-  private final Courier courier;
   private final boolean giftWrap;
 
   public SmallOrder(
@@ -23,38 +17,32 @@ public class SmallOrder {
       Address shippingAddress,
       Courier courier,
       boolean giftWrap) {
-    this.items = Collections.unmodifiableList(items);
-    this.creditCardDetails = creditCardDetails;
-    this.billingAddress = billingAddress;
-    this.shippingAddress = shippingAddress;
-    this.courier = courier;
+    super(Collections.unmodifiableList(items), creditCardDetails, billingAddress, shippingAddress, courier);
     this.giftWrap = giftWrap;
   }
 
-  public void process() {
-
+  @Override
+  public BigDecimal getTotalPrice() {
     BigDecimal total = new BigDecimal(0);
 
-    for (Product item : items) {
+    for (Product item : getItems()) {
       total = total.add(item.unitPrice());
     }
 
-    total = total.add(courier.deliveryCharge());
+    total = total.add(getCourier().deliveryCharge());
 
     if (giftWrap) {
       total = total.add(GIFT_WRAP_CHARGE);
     }
-
-    CreditCardProcessor.getInstance().charge(round(total), creditCardDetails, billingAddress);
-
-    if (giftWrap) {
-      courier.send(new GiftBox(items), shippingAddress);
-    } else {
-      courier.send(new Parcel(items), shippingAddress);
-    }
+    return total;
   }
 
-  private BigDecimal round(BigDecimal amount) {
-    return amount.setScale(2, RoundingMode.CEILING);
+  @Override
+  protected void dispatchOrder() {
+    if (giftWrap) {
+      getCourier().send(new GiftBox(getItems()), getShippingAddress());
+    } else {
+      getCourier().send(new Parcel(getItems()), getShippingAddress());
+    }
   }
 }

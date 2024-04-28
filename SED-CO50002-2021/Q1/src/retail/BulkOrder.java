@@ -1,17 +1,11 @@
 package retail;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 
-public class BulkOrder {
+public class BulkOrder extends Order {
 
-  private final List<Product> items;
-  private final CreditCardDetails creditCardDetails;
-  private final Address billingAddress;
-  private final Address shippingAddress;
-  private final Courier courier;
   private final BigDecimal discount;
 
   public BulkOrder(
@@ -21,36 +15,29 @@ public class BulkOrder {
       Address shippingAddress,
       Courier courier,
       BigDecimal discount) {
-    this.items = Collections.unmodifiableList(items);
-    this.creditCardDetails = creditCardDetails;
-    this.billingAddress = billingAddress;
-    this.shippingAddress = shippingAddress;
-    this.courier = courier;
+    super(Collections.unmodifiableList(items), creditCardDetails, billingAddress, shippingAddress, courier);
     this.discount = discount;
   }
 
-  public void process() {
-
+  @Override
+  protected BigDecimal getTotalPrice() {
     BigDecimal total = new BigDecimal(0);
-
-    for (Product item : items) {
+    for (Product item : getItems()) {
       total = total.add(item.unitPrice());
     }
 
-    if (items.size() > 10) {
+    if (getItems().size() > 10) {
       total = total.multiply(BigDecimal.valueOf(0.8));
-    } else if (items.size() > 5) {
+    } else if (getItems().size() > 5) {
       total = total.multiply(BigDecimal.valueOf(0.9));
     }
 
     total = total.subtract(discount);
-
-    CreditCardProcessor.getInstance().charge(round(total), creditCardDetails, billingAddress);
-
-    courier.send(new Parcel(items), shippingAddress);
+    return total;
   }
 
-  private BigDecimal round(BigDecimal amount) {
-    return amount.setScale(2, RoundingMode.CEILING);
+  @Override
+  protected void dispatchOrder() {
+    getCourier().send(new Parcel(getItems()), getShippingAddress());
   }
 }
