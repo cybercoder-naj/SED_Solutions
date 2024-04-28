@@ -14,9 +14,11 @@ public class VideoStreamer {
   private final Map<VideoStream, StreamTracker> currentStreams = new HashMap<>();
   private final PlaybackEventLog playbackEvents = new PlaybackEventLog();
   private final Recommendable recommendable;
+  private final Clock clock;
 
-  public VideoStreamer(Recommendable recommendable) {
+  public VideoStreamer(Recommendable recommendable, Clock clock) {
     this.recommendable = recommendable;
+    this.clock = clock;
   }
 
   public List<Movie> getSuggestedMovies(User user) {
@@ -30,13 +32,13 @@ public class VideoStreamer {
 
   public VideoStream startStreaming(Movie movie, User user) {
     VideoStream stream = new VideoStream(movie);
-    currentStreams.put(stream, new StreamTracker(user));
+    currentStreams.put(stream, new StreamTracker(user, clock));
     return stream;
   }
 
   public void stopStreaming(VideoStream stream) {
     StreamTracker streamTracker = currentStreams.remove(stream);
-    LocalTime endTime = LocalTime.now();
+    LocalTime endTime = clock.getTime();
     long minutesWatched = ChronoUnit.MINUTES.between(streamTracker.startTime(), endTime);
     if (minutesWatched > 15) {
       playbackEvents.logWatched(streamTracker.user(), stream.movie());
