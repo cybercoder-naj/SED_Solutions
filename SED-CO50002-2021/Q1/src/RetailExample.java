@@ -25,7 +25,7 @@ public class RetailExample {
             fedex,
             BigDecimal.ZERO);
 
-    bigOrder.process();
+    bigOrder.process(CreditCardProcessor.getInstance());
 
     SmallOrder smallOrder =
         new SmallOrder(
@@ -38,7 +38,7 @@ public class RetailExample {
             royalMail,
             false);
 
-    smallOrder.process();
+    smallOrder.process(CreditCardProcessor.getInstance());
   }
 }
 

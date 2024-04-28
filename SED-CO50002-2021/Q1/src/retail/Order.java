@@ -2,7 +2,6 @@ package retail;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Order {
@@ -20,9 +19,9 @@ public abstract class Order {
     this.courier = courier;
   }
 
-  public final void process() {
+  public final void process(Biller biller) {
     BigDecimal total = getTotalPrice();
-    CreditCardProcessor.getInstance().charge(round(total), creditCardDetails, billingAddress);
+    biller.charge(round(total), creditCardDetails, billingAddress);
     dispatchOrder();
   }
 

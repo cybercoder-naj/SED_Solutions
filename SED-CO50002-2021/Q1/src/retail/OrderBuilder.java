@@ -11,7 +11,7 @@ public class OrderBuilder {
   private Address shippingAddress;
   private Courier courier;
   private boolean giftWrap;
-  private BigDecimal discount;
+  private BigDecimal discount = BigDecimal.ZERO;
 
   public OrderBuilder(CreditCardDetails creditCardDetails, Address billingAddress, Courier courier) {
     this.creditCardDetails = creditCardDetails;
