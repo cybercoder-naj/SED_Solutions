@@ -13,9 +13,14 @@ public class VideoStreamer {
 
   private final Map<VideoStream, StreamTracker> currentStreams = new HashMap<>();
   private final PlaybackEventLog playbackEvents = new PlaybackEventLog();
+  private final Recommendable recommendable;
+
+  public VideoStreamer(Recommendable recommendable) {
+    this.recommendable = recommendable;
+  }
 
   public List<Movie> getSuggestedMovies(User user) {
-    List<Movie> recommendations = MediaLibrary.getInstance().recommendedMoviesFor(user);
+    List<Movie> recommendations = recommendable.recommendedMoviesFor(user);
 
     // sort the list of suggestions in descending order of number of views
     List<Movie> suggestions =  new ArrayList<>(recommendations);

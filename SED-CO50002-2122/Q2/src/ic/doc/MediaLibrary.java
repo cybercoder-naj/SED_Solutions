@@ -14,7 +14,7 @@ import static ic.doc.movies.Certification.PARENTAL_GUIDANCE;
 import static ic.doc.movies.Certification.TWELVE_A;
 import static java.util.Collections.EMPTY_LIST;
 
-public class MediaLibrary {
+public class MediaLibrary implements Recommendable {
 
     // This code is simplified for the purposes of the exam - you can imagine in real life
     // this class would be much bigger and more sophisticated, with much more data.
@@ -48,6 +48,7 @@ public class MediaLibrary {
                 ));
     }
 
+    @Override
     public List<Movie> recommendedMoviesFor(User user) {
 
         // A sophisticated ML algorithm runs and then recommends...
