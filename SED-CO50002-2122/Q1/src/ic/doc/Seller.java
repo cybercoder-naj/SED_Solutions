@@ -1,4 +1,4 @@
 package ic.doc;
 
-public interface Seller {
+public interface Seller extends Person {
 }

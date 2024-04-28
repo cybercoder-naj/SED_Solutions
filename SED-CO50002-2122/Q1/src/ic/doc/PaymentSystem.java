@@ -1,5 +1,7 @@
 package ic.doc;
 
 public interface PaymentSystem {
-  boolean charge(double price, Bidder bidder);
+  void charge(double price, Bidder bidder);
+
+  void pay(double price, Person person);
 }
