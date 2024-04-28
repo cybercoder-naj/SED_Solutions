@@ -16,6 +16,7 @@ public class AuctionManagerTest {
   private final Bidder ALICE = context.mock(Bidder.class, "alice");
   private final Seller BOB = context.mock(Seller.class);
   private final Bidder CAROLE = context.mock(Bidder.class, "carole");
+  private final Bidder DAVID = context.mock(Bidder.class, "david");
   private final PaymentSystem paymentSystem = context.mock(PaymentSystem.class);
   private final AuctionManager auctionManager = new AuctionManager(paymentSystem);
 
@@ -46,5 +47,21 @@ public class AuctionManagerTest {
       oneOf(CAROLE).respondWith(BidType.TOO_LOW);
     }});
     auctionManager.bid(5.0, CAROLE);
+  }
+
+
+  @Test
+  public void acceptHigherBid() {
+    context.checking(new Expectations() {{
+      oneOf(paymentSystem).charge(10.0, ALICE);
+      oneOf(ALICE).respondWith(BidType.ACCEPTED);
+    }});
+    auctionManager.bid(10.0, ALICE);
+
+    context.checking(new Expectations() {{
+      oneOf(paymentSystem).charge(20.0, DAVID);
+      oneOf(DAVID).respondWith(BidType.ACCEPTED);
+    }});
+    auctionManager.bid(20.0, DAVID);
   }
 }
