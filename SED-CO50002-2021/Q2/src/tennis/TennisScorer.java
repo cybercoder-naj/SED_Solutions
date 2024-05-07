@@ -4,17 +4,11 @@ import javax.swing.*;
 
 public class TennisScorer {
 
-  private int playerOneScore = 0;
-  private int playerTwoScore = 0;
-
-  private final String[] scoreNames = {"Love", "15", "30", "40"};
-
   public static void main(String[] args) {
-    new TennisScorer().display();
+    new TennisScorer().display(new ScoringModel());
   }
 
-  private void display() {
-
+  private void display(ScoringModel model) {
     JFrame window = new JFrame("Tennis");
     window.setSize(400, 150);
 
@@ -27,9 +21,9 @@ public class TennisScorer {
 
     playerOneScores.addActionListener(
             e -> {
-              playerOneWinsPoint();
-              scoreDisplay.setText(score());
-              if (gameHasEnded()) {
+              model.playerOneWinsPoint();
+              scoreDisplay.setText(model.getScore());
+              if (model.isGameOver()) {
                 playerOneScores.setEnabled(false);
                 playerTwoScores.setEnabled(false);
               }
@@ -37,9 +31,9 @@ public class TennisScorer {
 
     playerTwoScores.addActionListener(
             e -> {
-              playerTwoWinsPoint();
-              scoreDisplay.setText(score());
-              if (gameHasEnded()) {
+              model.playerTwoWinsPoint();
+              scoreDisplay.setText(model.getScore());
+              if (model.isGameOver()) {
                 playerOneScores.setEnabled(false);
                 playerTwoScores.setEnabled(false);
               }
@@ -56,47 +50,4 @@ public class TennisScorer {
     window.setVisible(true);
 
   }
-
-  private String score() {
-
-    if (playerOneScore > 2 && playerTwoScore > 2) {
-      int difference = playerOneScore - playerTwoScore;
-      switch (difference) {
-        case 0:
-          return "Deuce";
-        case 1:
-          return "Advantage Player 1";
-        case -1:
-          return "Advantage Player 2";
-        case 2:
-          return "Game Player 1";
-        case -2:
-          return "Game Player 2";
-      }
-    }
-
-    if (playerOneScore > 3) {
-      return "Game Player 1";
-    }
-    if (playerTwoScore > 3) {
-      return "Game Player 2";
-    }
-    if (playerOneScore == playerTwoScore) {
-      return scoreNames[playerOneScore] + " all";
-    }
-    return scoreNames[playerOneScore] + " - " + scoreNames[playerTwoScore];
-  }
-
-  private void playerOneWinsPoint() {
-    playerOneScore++;
-  }
-
-  private void playerTwoWinsPoint() {
-    playerTwoScore++;
-  }
-
-  private boolean gameHasEnded() {
-    return score().contains("Game");
-  }
-
 }
