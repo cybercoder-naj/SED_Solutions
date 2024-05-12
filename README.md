@@ -1,9 +1,9 @@
 # SED Solutions
 
-My personal solutions to the COMP50002 Software Engineering Design module at Imperial College London.
+My solutions to the COMP50002 Software Engineering Design module at Imperial College London.
 
 > [!CAUTION]
-> Some solutions are correct while others are incomplete, so these solutions are NOT the perfect source of truth.
+> Some solutions are correct while others are incomplete. These solutions are _not_ the perfect source of truth.
 
 ## Solutions to the years:
 
