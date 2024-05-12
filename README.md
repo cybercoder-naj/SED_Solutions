@@ -17,7 +17,7 @@ My personal solutions to the COMP50002 Software Engineering Design module at Imp
 
 Feel free to open a PR to either:
 
-1. Correct my mistake.
+1. Correct my mistake, or add something I missed.
 2. Upload a solution to a particular year.
 
 ## Issues are welcome
